@@ -158,6 +158,8 @@ Sudden stillness after heavy motion can make the climax feel larger.
 
 ## Annotation System
 
+Profile selection and Legacy compatibility are governed by `references/annotation-system.md`. The color meanings below are the `ANNOTATION_PRO` baseline; do not treat them as the default Profile for every task.
+
 Use annotation colors only when requested or useful:
 
 1. Red arrows: body or object movement.
