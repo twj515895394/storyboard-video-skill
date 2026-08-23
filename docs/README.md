@@ -56,6 +56,16 @@
 
 该案例不应直接复制进 `SKILL.md`，而应作为设计素材和 Action Previs 回归基线。
 
+### 3. [tests/golden-cases/README.md](../tests/golden-cases/README.md)
+
+V0 Golden Case 回归协议和首批三组冻结案例：
+
+- `ACTION_PREVIS`：Whoking vs Dao Wang
+- `DIALOGUE`：室内对白 / 权力反转
+- `HORROR_SUSPENSE`：走廊 / 看不见的威胁
+
+这些文件冻结输入、生产目标、硬约束和人工评分口径；真实图像模型输出需要在实际调用 Skill 后另行采集。当前包含 Action、Dialogue、Horror 与 V2 `PROCEDURAL_MONTAGE / ASSEMBLY` 的 Teleport Device Assembly。
+
 ---
 
 ## 开发方式
@@ -94,13 +104,11 @@
 
 ## 当前状态
 
-当前仓库仍保留 fork 时的原始运行逻辑。
+当前仓库仍保留 fork 时的原始运行逻辑，已完成 Phase 0 的三组 V0 Golden Case 输入和回归协议冻结。
 
-本轮只新增 `docs/` 设计文档，**尚未修改：**
+Phase 0 新增了 `tests/golden-cases/` 基线资产；Phase 1 已新增核心规则 reference，随后完成了 Reference Role System、Continuity State、Scene Geography、Annotation Profiles 和 Action Previs 规则层。当前仍**尚未修改：**
 
-- `SKILL.md`
-- `references/shot-language.md`
 - `references/storyboard-formats.md`
 - `agents/openai.yaml`
 
-下一阶段建议先建立 V0 Golden Test Baseline，然后开始 Phase 1：Core Architecture / Mode Router。
+Action Previs 规则已落地，并已完成 Whoking Golden Case 的三 Variant 第一轮生成对照；Dialogue/Horror 回归也已完成，运行结果分别见 `tests/golden-cases/runs/GC-ACTION-001/2026-08-23/`、`tests/golden-cases/runs/GC-DIALOGUE-001/2026-08-23/` 和 `tests/golden-cases/runs/GC-HORROR-001/2026-08-23/`。下一阶段进入 Validator。

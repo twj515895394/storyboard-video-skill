@@ -301,6 +301,7 @@ Skill 首先判断任务属于哪种导演模式，而不是所有场景共用�
 | `SHORT_FORM` | 短视频留存 | Hook、Pattern Interrupt、Compression、Loop |
 | `CINEMATIC_KEYFRAME` | 高质量电影关键画面 | Composition、Lighting、Iconic Moment |
 | `ANIMATIC` | 视频制作预演 | Duration、Motion、Transition、Coverage |
+| `PROCEDURAL_MONTAGE` | 状态推进式过程 | Process Progress、State Change、Prop State、Cause-Effect |
 
 允许混合模式，例如：
 
@@ -310,6 +311,8 @@ SECONDARY_MODE: HORROR_SUSPENSE
 ```
 
 但必须有 Primary，避免规则冲突。
+
+`PROCEDURAL_MONTAGE` 使用六问适用性判断器；也可以作为其他 Primary Mode 的局部 Secondary Pattern，不覆盖主模式。
 
 ---
 
@@ -541,6 +544,8 @@ upright discipline
 
 这样 Shot 设计时不是随机生成“漂亮动作”，而是从角色自己的动作语言中采样。
 
+当前已将 Motion DNA 规则落地到 `references/character-motion-dna.md`，但仍需通过 Whoking Golden Case 的真实生成对照验证模型是否能稳定遵循。
+
 ---
 
 ## 10. Action Choreography Engine
@@ -572,6 +577,12 @@ INITIATION
 6. 避免重复 stare-down / pose / anticipation。
 7. 每一次反击必须能找到前一个动作原因。
 8. 结束帧应该是动作结果或强悬念，而不是随机 Hero Pose。
+
+当前已将 Action Choreography 规则落地到 `references/action-choreography.md`；它只作用于 `ACTION_PREVIS`，不改变 Dialogue/Horror 的静止与停顿规则。
+
+Whoking Golden Case 已完成三组第一轮生成对照：Original/Legacy、Universal + Legacy、Universal + PRO。结果与当前设计假设一致：`ANNOTATION_PRO` 的主体/摄影机/构图语义分离最清楚，但仍需 Dialogue/Horror 回归验证跨模式边界。
+
+Dialogue/Horror 回归已完成：Dialogue 保留 Silence/Hold、Eyeline、录音笔连续性和 Power Shift；Horror 保留静止、Negative Space、False Calm 和延迟揭示。当前没有发现 Action 规则污染非动作模式；Dialogue 的单格子画面拆分问题留给后续 Prompt Compiler/Validator 处理。
 
 ---
 
@@ -672,6 +683,8 @@ BLUE ARROW = motion / attack / camera / force
 ```
 
 此模式只在用户明确指定或复现现有模板时使用，**不作为系统默认规范**。
+
+当前已将四种 Profile 落地到 `references/annotation-system.md`，并明确其与 `shot-language.md` 通用镜头词汇的职责边界。
 
 ---
 
@@ -1121,10 +1134,12 @@ OUTPUT_MODE: ANIMATIC
 工作：
 
 - 保留现有 SKILL.md / references
-- 保存典型测试输入和输出
-- 建立测试样例集合
+- 冻结典型测试输入和生产目标
+- 建立三组首批测试样例集合：Action、Dialogue、Horror
+- 统一硬约束、人工评分维度和回归规则
+- 在真实 Skill 调用后再补充模型输出，不把未执行结果写成基线事实
 
-不要急着重构。
+Phase 0 基线资产位于 `tests/golden-cases/`。当前仍未修改运行逻辑，也未引入自动化 Validator。
 
 ### Phase 1 — Core Architecture
 
@@ -1147,6 +1162,8 @@ OUTPUT_MODE: ANIMATIC
 3. `reference-image-system.md`
 
 这一步解决 AI Storyboard 最常见的一致性问题。
+
+Reference Role System 已落地为 `references/reference-image-system.md`；本阶段随后补齐 `references/continuity-system.md` 与 `references/scene-geography.md`，并采用 `FULL / LIGHT / MINIMAL` 三档状态策略。
 
 ### Phase 3 — Annotation System
 
@@ -1202,7 +1219,7 @@ Skill 开发必须“边开发边调效果”，不能只检查 Markdown 是否�
 
 ### 22.1 Golden Cases
 
-至少维护以下 Golden Test：
+长期目标至少维护以下 Golden Test：
 
 1. 双人格斗：Whoking vs Dao Wang
 2. 中国 80 年代山村男孩放学做饭
@@ -1211,6 +1228,15 @@ Skill 开发必须“边开发边调效果”，不能只检查 Markdown 是否�
 5. 产品广告
 6. 舞蹈 / MV
 7. 10 秒强 Hook 短视频
+
+Phase 0 先冻结前三类核心风险案例：
+
+- `ACTION_PREVIS`：Whoking vs Dao Wang
+- `DIALOGUE`：室内对白 / 权力反转
+- `HORROR_SUSPENSE`：恐怖走廊 / 看不见的威胁
+- `PROCEDURAL_MONTAGE / ASSEMBLY`：Teleport Device Assembly（V2 Golden Case B）
+
+具体输入、硬约束和评分口径见 `tests/golden-cases/`。
 
 ### 22.2 每个 Case 测什么
 
@@ -1302,15 +1328,17 @@ Active Wide Reset Quality
 
 ## 24. 本阶段明确不做的事情
 
-本轮只建立设计基线，不立即：
+本轮建立设计基线和 V0 Golden Case 规范，但不立即：
 
 - 重写 `SKILL.md`
-- 修改现有 `shot-language.md`
+- 重写现有 `shot-language.md` 的镜头词汇（本阶段仅补充其与 Annotation Profile 的职责说明）
 - 修改现有 `storyboard-formats.md`
 - 新建全部 references
 - 引入代码执行器
 - 强制 JSON 输出
 - 强制所有任务使用复杂 Continuity State
+
+当前已完成的 Phase 0 资产不代表真实模型效果已经验证；模型输出采集和评分将在实际调用 Skill 后进行。
 
 这些将在后续按 Phase 分步实现并测试。
 
@@ -1348,19 +1376,11 @@ Validator
 
 ## 26. 下一步建议
 
-后续开发建议严格按以下顺序：
+Phase 0 已完成输入与验收协议冻结，Core Architecture、Reference Role、Continuity/Geography、Annotation Profiles 和 Action Previs 规则层已分阶段落地，后续开发建议严格按以下顺序：
 
 ```text
-Step 1: 冻结 V0 测试样例
-Step 2: 改造 Core Rules + Mode Router
-Step 3: Reference Role System
-Step 4: Continuity State + Scene Geography
-Step 5: Annotation Profiles
-Step 6: Action Previs + Motion DNA
-Step 7: 使用 Whoking 案例做第一轮图像测试
-Step 8: 用 Dialogue/Horror 回归，检查是否过度动作化
-Step 9: Validator
-Step 10: 继续扩展商业、MV、短视频
+Step 1: Validator
+Step 2: 继续扩展商业、MV、短视频
 ```
 
 本文件作为后续开发的设计基线。实际实现中如果需要修改关键原则，应同步更新本文件中的“关键设计决策记录”，避免代码 / Skill 行为和设计文档长期漂移。

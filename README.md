@@ -69,11 +69,38 @@ storyboard-video-previs/
 ├── agents/
 │   └── openai.yaml
 └── references/
+    ├── storyboard-core.md
+    ├── reference-image-system.md
+    ├── scene-geography.md
+    ├── continuity-system.md
+    ├── annotation-system.md
+    ├── storyboard-validator.md
+    ├── procedural-montage.md
+    ├── character-motion-dna.md
+    ├── action-choreography.md
     ├── shot-language.md
     └── storyboard-formats.md
 ```
 
 `SKILL.md` 是主工作流。
+
+`references/storyboard-core.md` 提供生产目标解析、Mode Router、Cinematic Function、Director Plan、模式保护和输出校验规则。
+
+`references/reference-image-system.md` 提供参考图角色、控制边界、优先级和冲突校验规则。
+
+`references/scene-geography.md` 提供空间锚点、Camera Axis、运动路径和 Active Wide Reset 规则。
+
+`references/continuity-system.md` 提供分级 Continuity State、Panel In/Out、状态传播和连续性校验规则。
+
+`references/annotation-system.md` 提供 SIMPLE、PRO、CLEAN、LEGACY_BLUE 注释 Profile 及颜色语义校验规则。
+
+`references/storyboard-validator.md` 提供统一的 BLOCKER、WARNING、NOTE、PASS 严重级别和 Validation Notes 输出格式。
+
+`references/procedural-montage.md` 提供状态推进型过程的模式路由、六问判断器、道具/步骤因果、节奏曲线和嵌入 Pattern 规则。
+
+`references/character-motion-dna.md` 提供角色动作语言、重心、节奏、攻防和禁止动作规则。
+
+`references/action-choreography.md` 提供 Action 的 Cause → Effect、动作阶段、Combat Geography、升级和结尾校验规则。
 
 `references/shot-language.md` 提供景别、角度、镜头运动、构图和注释系统。
 
